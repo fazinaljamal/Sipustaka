@@ -23,9 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-2^&02luvg9qqyn%p7tx6&8t#inl$!nz7$pz4r2c(8bcnwi%!*c'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'fazinhanzala.pythonanywhere.com'
+]
 
 
 # Application definition
@@ -75,12 +77,8 @@ WSGI_APPLICATION = 'perpustakaan.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'perpustakaan_db',
-        'USER': 'postgres',
-        'PASSWORD': 'jamal26',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
