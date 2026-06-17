@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Data Buku
+{% endblock %}
+
+{% block content %}
+<div class="flex justify-between items-center mb-5">
+    <div>
+        <h2 class="text-gray-500 text-sm">
+            Kelola data buku SIPUSTAKA.
+        </h2>
+        <h1 class="text-3xl font-bold">
+            Daftar Buku
+        </h1>
+    </div>
+    <a href="{% url 'buku_create' %}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+        + Tambah Buku
+    </a>
+</div>
+
+<div class="overflow-x-auto">
+    <table class="min-w-full bg-white rounded-lg overflow-hidden shadow-md">
+        <thead class="bg-gray-100">
+            <tr class="border-b border-gray-200">
+                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">No</th>
+                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Judul</th>
+                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Pengarang</th>
+                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Kategori</th>
+                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Penerbit</th>
+                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Tahun</th>
+                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Rak</th>
+                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Stok</th>
+                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for buku in buku_list %}
+            <tr class="border-b hover:bg-gray-50 transition">
+                <td class="px-4 py-3 text-sm">{{ forloop.counter }}</td>
+                <td class="px-4 py-3 text-sm font-medium text-gray-800">{{ buku.1 }}</td>
+                <td class="px-4 py-3 text-sm">{{ buku.2 }}</td>
+                <td class="px-4 py-3 text-sm">{{ buku.3 }}</td>
+                <td class="px-4 py-3 text-sm">{{ buku.4 }}</td>
+                <td class="px-4 py-3 text-sm">{{ buku.5 }}</td>
+                <td class="px-4 py-3 text-sm">
+                    <span class="px-2 py-1 rounded bg-gray-100 text-gray-600 text-xs font-medium">{{ buku.6 }}</span>
+                </td>
+                <td class="px-4 py-3 text-sm">
+                    <span class="font-bold text-gray-800">{{ buku.7 }}</span>
+                </td>
+                <td class="px-4 py-3">
+                    <div class="flex gap-1">
+                        <a href="{% url 'buku_detail' buku.0 %}" class="px-2.5 py-1 rounded-md bg-gray-100 text-slate-700 hover:bg-gray-200 text-xs font-medium transition">
+                            Detail
+                        </a>
+                        <a href="{% url 'buku_update' buku.0 %}" class="px-2.5 py-1 rounded-md bg-blue-500 text-white hover:bg-blue-600 text-xs font-medium transition">
+                            Edit
+                        </a>
+                        <a href="{% url 'buku_delete' buku.0 %}" class="px-2.5 py-1 rounded-md bg-red-500 text-white hover:bg-red-600 text-xs font-medium transition">
+                            Hapus
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

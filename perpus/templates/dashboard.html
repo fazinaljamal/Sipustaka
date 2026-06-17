@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<div class="mb-6">
+    <h1 class="text-2xl font-bold text-slate-900">Dashboard</h1>
+    <p class="text-sm text-slate-500">Ringkasan data perpustakaan</p>
+</div>
+
+<!-- Statistik Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <!-- Total Buku -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+        <div class="flex items-start justify-between">
+            <div>
+                <p class="text-sm text-slate-500">Total Buku</p>
+                <p class="text-3xl font-bold text-slate-900 mt-1">{{ total_buku }}</p>
+                <p class="text-xs text-slate-400 mt-1">Keseluruhan unit buku tersedia.</p>
+            </div>
+            <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
+                <span class="material-icons-outlined text-blue-600 text-2xl">menu_book</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Total Judul -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+        <div class="flex items-start justify-between">
+            <div>
+                <p class="text-sm text-slate-500">Total Judul</p>
+                <p class="text-3xl font-bold text-slate-900 mt-1">{{ total_judul }}</p>
+                <p class="text-xs text-slate-400 mt-1">Jumlah koleksi judul buku.</p>
+            </div>
+            <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
+                <span class="material-icons-outlined text-purple-600 text-2xl">library_books</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sedang Dipinjam -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+        <div class="flex items-start justify-between">
+            <div>
+                <p class="text-sm text-slate-500">Sedang Dipinjam</p>
+                <p class="text-3xl font-bold text-yellow-600 mt-1">{{ sedang_dipinjam }}</p>
+                <p class="text-xs text-slate-400 mt-1">Transaksi peminjaman aktif.</p>
+            </div>
+            <div class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center">
+                <span class="material-icons-outlined text-yellow-600 text-2xl">bookmark</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sudah Dikembalikan -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+        <div class="flex items-start justify-between">
+            <div>
+                <p class="text-sm text-slate-500">Sudah Dikembalikan</p>
+                <p class="text-3xl font-bold text-green-600 mt-1">{{ sudah_dikembalikan }}</p>
+                <p class="text-xs text-slate-400 mt-1">Transaksi yang sudah selesai.</p>
+            </div>
+            <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
+                <span class="material-icons-outlined text-green-600 text-2xl">check_circle</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Grafik dan Tabel -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Distribusi Stok Buku -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+        <h3 class="text-sm font-semibold text-slate-700">Analisis Stok</h3>
+        <h2 class="text-lg font-bold text-slate-900 mt-0.5">Distribusi Stok Buku</h2>
+        
+        <div class="mt-4 space-y-2">
+            {% if distribusi_stok %}
+                {% for buku in distribusi_stok %}
+                <div class="flex items-center justify-between p-3 rounded-lg bg-slate-50 border border-slate-100">
+                    <span class="text-sm text-slate-700">{{ buku.0 }}</span>
+                    <span class="font-bold text-slate-900">{{ buku.1 }}</span>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-sm text-slate-500 text-center py-4">Belum ada data buku.</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Status Peminjaman -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+        <h3 class="text-sm font-semibold text-slate-700">Status Peminjaman</h3>
+        <h2 class="text-lg font-bold text-slate-900 mt-0.5">Ringkasan Transaksi</h2>
+        
+        <div class="mt-4 space-y-2">
+            {% if status_peminjaman %}
+                {% for status in status_peminjaman %}
+                <div class="flex items-center justify-between p-3 rounded-lg bg-slate-50 border border-slate-100">
+                    <div class="flex items-center gap-3">
+                        {% if status.0 == "Dipinjam" %}
+                            <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+                            <span class="text-sm text-slate-700">Sedang Dipinjam</span>
+                        {% elif status.0 == "Dikembalikan" %}
+                            <span class="w-3 h-3 rounded-full bg-green-500"></span>
+                            <span class="text-sm text-slate-700">Sudah Dikembalikan</span>
+                        {% else %}
+                            <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                            <span class="text-sm text-slate-700">{{ status.0 }}</span>
+                        {% endif %}
+                    </div>
+                    <span class="font-bold text-slate-900">{{ status.1 }}</span>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-sm text-slate-500 text-center py-4">Belum ada transaksi peminjaman.</p>
+            {% endif %}
+        </div>
+        
+        <!-- Total transaksi -->
+        <div class="mt-4 pt-4 border-t border-slate-200">
+            <div class="flex justify-between text-sm">
+                <span class="text-slate-500">Total Transaksi</span>
+                <span class="font-bold text-slate-900">{{ sedang_dipinjam|add:sudah_dikembalikan }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

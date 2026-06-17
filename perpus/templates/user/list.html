@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+    <div>
+        <p class="text-slate-500">Data siswa yang bisa meminjam buku.</p>
+        <h3 class="text-2xl font-bold text-slate-900">User</h3>
+    </div>
+    <a href="{% url 'user_create' %}" class="inline-flex items-center gap-2 rounded-2xl bg-blue-600 text-white px-5 py-3 shadow-lg shadow-blue-500/15 hover:bg-blue-700 transition">
+        <span class="material-icons-outlined">person_add</span>
+        Tambah User
+    </a>
+</div>
+
+<div class="rounded-3xl bg-white p-6 shadow-lg shadow-slate-200/60 border border-slate-200 overflow-x-auto">
+    <table class="min-w-full text-left text-sm">
+        <thead class="border-b border-slate-200 text-slate-500">
+            <tr>
+                <th class="py-3 px-4 font-medium">No</th>
+                <th class="py-3 px-4 font-medium">Nama</th>
+                <th class="py-3 px-4 font-medium">Kelas</th>
+                <th class="py-3 px-4 font-medium">NIS</th>
+                <th class="py-3 px-4 font-medium">Status</th>
+                <th class="py-3 px-4 font-medium">Aksi</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+            {% for s in user_list %}
+            <tr class="hover:bg-slate-50 transition">
+                <td class="py-4 px-4 font-medium text-slate-800">{{ forloop.counter }}</td>
+                <td class="py-4 px-4 text-slate-700">{{ s.1 }}</td>
+                <td class="py-4 px-4 text-slate-700">{{ s.2 }}</td>
+                <td class="py-4 px-4 text-slate-700">{{ s.3 }}</td>
+                <td class="py-4 px-4">
+                    {% if s.4 == "Aktif" or s.4 == True %}
+                    <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold bg-emerald-100 text-emerald-700">Aktif</span>
+                    {% else %}
+                    <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold bg-slate-200 text-slate-700">Nonaktif</span>
+                    {% endif %}
+                </td>
+                <td class="py-4 px-4">
+                    <div class="flex gap-2">
+                        <a href="{% url 'user_detail' s.0 %}" 
+                           class="px-3 py-1 rounded-md bg-gray-100 text-slate-700 hover:bg-gray-200 text-xs font-medium">
+                            Detail
+                        </a>
+                        <a href="{% url 'user_update' s.0 %}" 
+                           class="px-3 py-1 rounded-md bg-blue-500 text-white hover:bg-blue-600 text-xs font-medium">
+                            Edit
+                        </a>
+                        <a href="{% url 'user_delete' s.0 %}" 
+                           class="px-3 py-1 rounded-md bg-red-500 text-white hover:bg-red-600 text-xs font-medium">
+                            Hapus
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="py-5 text-center text-slate-500">Belum ada data user.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

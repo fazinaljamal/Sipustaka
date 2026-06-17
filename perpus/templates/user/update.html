@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit User{% endblock %}
+
+{% block content %}
+<div class="flex items-center gap-3 mb-6">
+    <a href="{% url 'user_detail' user.0 %}" class="text-slate-400 hover:text-slate-600">
+        <span class="material-icons-outlined">arrow_back</span>
+    </a>
+    <div>
+        <p class="text-sm text-slate-500">Kelola User</p>
+        <h1 class="text-2xl font-bold text-slate-900">Edit User</h1>
+    </div>
+</div>
+
+<div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 max-w-2xl">
+    <form method="POST">
+        {% csrf_token %}
+        
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Nama</label>
+                <input type="text" name="nama" value="{{ user.1 }}" 
+                       class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Kelas</label>
+                <input type="text" name="kelas" value="{{ user.2 }}" 
+                       class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">NIS</label>
+                <input type="text" name="nis" value="{{ user.3 }}" 
+                       class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Status</label>
+                <select name="status" 
+                        class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                    <option value="Aktif" {% if user.4 == "Aktif" or user.4 == True %}selected{% endif %}>Aktif</option>
+                    <option value="Nonaktif" {% if user.4 == "Nonaktif" or user.4 == False %}selected{% endif %}>Nonaktif</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="flex gap-3 mt-6 pt-4 border-t border-slate-200">
+            <a href="{% url 'user_detail' user.0 %}" 
+               class="px-6 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200 transition">
+                Batal
+            </a>
+            <button type="submit" 
+                    class="px-6 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition">
+                Perbarui User
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

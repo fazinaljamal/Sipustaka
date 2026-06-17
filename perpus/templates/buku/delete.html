@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}Hapus Siswa{% endblock %}
+
+{% block content %}
+
+<div class ="space-y-5">
+    <div class="p-4 border border-red-200 bg-red-50 rounded-lg">
+        <h2 class="font-semibold text-red-600">
+            Apakah anda ingin menghapus data ini?
+        </h2>
+        <p class ="text-sm text-red-500 mt-1">
+            data yang sudah terhapus tidak akan dapat di pulihkan Kembali
+        </p>
+    </div>
+
+ <div class="grid gap-4 md:grid-cols-2">
+
+
+<div class="p-4 rounded-lg bg-slate-50 border">
+<p class="text-sm text-slate-500">Judul</p>
+<p class="font-semibold">{{ buku.judul }}</p>
+</div>
+
+
+<div class="p-4 rounded-lg bg-slate-50 border">
+<p class="text-sm text-slate-500">ID Buku</p>
+<p class="font-semibold">{{ buku.id }}</p>
+</div>
+
+
+<div class="p-4 rounded-lg bg-slate-50 border">
+<p class="text-sm text-slate-500">Pengarang</p>
+<p class="font-semibold">{{ buku.pengarang }}</p>
+</div>
+
+
+<div class="p-4 rounded-lg bg-slate-50 border">
+<p class="text-sm text-slate-500">Kategori</p>
+<p class="font-semibold">{{ buku.kategori }}</p>
+</div>
+
+
+<div class="p-4 rounded-lg bg-slate-50 border">
+<p class="text-sm text-slate-500">Penerbit</p>
+<p class="font-semibold">{{ buku.penerbit }}</p>
+</div>
+
+
+<div class="p-4 rounded-lg bg-slate-50 border">
+<p class="text-sm text-slate-500">Tahun Terbit</p>
+<p class="font-semibold">{{ buku.tahun_terbit }}</p>
+</div>
+
+
+</div>
+
+    <form method="POST" class="flex gap-3">
+        {% csrf_token %}
+
+        <button
+            type="submit"
+            class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+        >
+            Ya, Hapus
+        </button>
+
+        <a
+            href="{% url 'buku_list' %}"
+            class="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200"
+        >
+            Batal
+        </a>
+    </form>
+</div>
+
+{% endblock %}

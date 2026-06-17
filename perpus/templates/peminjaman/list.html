@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}Data Peminjaman{% endblock %}
+
+{% block content %}
+<div class="flex justify-between items-center mb-5">
+    <div>
+        <h2 class="text-gray-500">Catat peminjaman dan pengembalian buku.</h2>
+        <h1 class="text-3xl font-bold">Peminjaman</h1>
+    </div>
+    <a href="{% url 'peminjaman_create' %}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+        + Tambah Peminjaman
+    </a>
+</div>
+
+<!-- Pesan notifikasi -->
+{% if messages %}
+    {% for message in messages %}
+        <div class="mb-4 p-4 rounded-lg {% if message.tags == 'success' %}bg-green-100 text-green-700{% elif message.tags == 'error' %}bg-red-100 text-red-700{% else %}bg-blue-100 text-blue-700{% endif %}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<div class="overflow-x-auto">
+    <table class="min-w-full bg-white rounded-lg overflow-hidden shadow-md">
+        <thead class="bg-gray-50">
+            <tr class="border-b border-gray-200">
+                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">ID</th>
+                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Nama Peminjam</th>
+                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Buku</th>
+                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Tanggal Pinjam</th>
+                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Jatuh Tempo</th>
+                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Keperluan</th>
+                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Status</th>
+                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if peminjaman_list %}
+                {% for pinjam in peminjaman_list %}
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="px-4 py-3 text-sm">{{ pinjam.0 }}</td>
+                    <td class="px-4 py-3 text-sm">{{ pinjam.1 }}</td>
+                    <td class="px-4 py-3 text-sm">{{ pinjam.2 }}</td>
+                    <td class="px-4 py-3 text-sm">{{ pinjam.3 }}</td>
+                    <td class="px-4 py-3 text-sm">{{ pinjam.4 }}</td>
+                    <td class="px-4 py-3 text-sm">{{ pinjam.6|default:"-" }}</td>
+                    <td class="px-4 py-3 text-sm">
+                        {% if pinjam.5 == "Dipinjam" %}
+                            {% if pinjam.4 < today|date:"Y-m-d" %}
+                                <span class="px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-medium">
+                                    Terlambat
+                                </span>
+                            {% else %}
+                                <span class="px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-xs font-medium">
+                                    Dipinjam
+                                </span>
+                            {% endif %}
+                        {% elif pinjam.5 == "Dikembalikan" %}
+                            <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-medium">
+                                Dikembalikan
+                            </span>
+                        {% else %}
+                            <span class="px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-medium">
+                                {{ pinjam.5 }}
+                            </span>
+                        {% endif %}
+                    </td>
+                    <td class="px-4 py-3">
+                        <div class="flex gap-2">
+                            
+                            {% if pinjam.5 == "Dipinjam" %}
+                            <a href="{% url 'peminjaman_kembalikan' pinjam.0 %}" 
+                               class="px-3 py-1 rounded-md bg-green-500 text-white hover:bg-green-600 text-xs font-medium">
+                                Kembalikan
+                            </a>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="8" class="py-5 text-center text-slate-500">
+                        Belum ada data peminjaman.
+                    </td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
