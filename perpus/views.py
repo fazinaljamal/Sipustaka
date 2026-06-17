@@ -96,7 +96,6 @@ def buku_detail(request, id):
 
 def buku_create(request):
     if request.method == 'POST':
-
         judul = request.POST.get('judul')
         pengarang = request.POST.get('pengarang')
         kategori = request.POST.get('kategori')
@@ -104,24 +103,38 @@ def buku_create(request):
         tahun_terbit = request.POST.get('tahun_terbit')
         rak = request.POST.get('rak')
         stok = request.POST.get('stok')
+        isbn = request.POST.get('isbn')  # <-- TAMBAHKAN INI
         deskripsi = request.POST.get('deskripsi')
-
+        
+        # VALIDASI: cek apakah semua field wajib diisi
+        if not all([judul, pengarang, kategori, penerbit, tahun_terbit, rak, stok]):
+            messages.error(request, 'Semua field wajib diisi!')
+            return redirect('buku_create')
+        
+        # VALIDASI: stok harus angka positif
+        try:
+            stok = int(stok)
+            if stok < 0:
+                messages.error(request, 'Stok tidak boleh negatif!')
+                return redirect('buku_create')
+        except ValueError:
+            messages.error(request, 'Stok harus berupa angka!')
+            return redirect('buku_create')
 
         with connection.cursor() as cursor:
             cursor.execute(
                 """
                 INSERT INTO buku
-                (judul, pengarang,kategori,penerbit,tahun_terbit,rak,stok,deskripsi)
-
-                VALUES (%s, %s, %s, %s, %s, %s, %s,  %s)
+                (judul, pengarang, kategori, penerbit, tahun_terbit, rak, stok, isbn, deskripsi)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """,
-                [judul, pengarang,kategori,penerbit,tahun_terbit,rak,stok,deskripsi]
+                [judul, pengarang, kategori, penerbit, tahun_terbit, rak, stok, isbn, deskripsi]
             )
-
+        
+        messages.success(request, f'Buku "{judul}" berhasil ditambahkan!')
         return redirect('buku_list')
 
     return render(request, 'buku/create.html')
-
 
 def buku_update(request, id):
 
